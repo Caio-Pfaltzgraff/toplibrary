@@ -6,12 +6,14 @@ import br.com.toplibrary.domain.model.book.genre.Genre;
 import br.com.toplibrary.domain.model.book.publishingCompany.PublishingCompany;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "tb_book")
 @Data
+@NoArgsConstructor
 public class Book {
     @Id @GeneratedValue(generator = "UUID")
     private UUID id;

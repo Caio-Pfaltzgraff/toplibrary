@@ -4,6 +4,7 @@ import br.com.toplibrary.domain.model.book.Book;
 import br.com.toplibrary.domain.model.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 @Entity(name = "tb_rental")
 @Data
+@NoArgsConstructor
 public class Rental {
 
     @Id @GeneratedValue(generator = "UUID")

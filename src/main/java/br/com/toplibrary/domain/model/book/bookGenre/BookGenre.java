@@ -4,14 +4,15 @@ import br.com.toplibrary.domain.model.book.Book;
 import br.com.toplibrary.domain.model.book.genre.Genre;
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.UUID;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "tb_book_genre")
 @Data
+@NoArgsConstructor
 public class BookGenre {
-    @Id @GeneratedValue(generator = "UUID")
-    private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "tb_book_id")
