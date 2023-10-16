@@ -3,6 +3,7 @@ package br.com.toplibrary.domain.model.user;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public class User {
     private String email;
 
     @Column(unique = true)
+    @Length(min = 3)
     private String username;
 
     private String name;
@@ -39,5 +41,9 @@ public class User {
         this.name = name;
         this.password = password;
         this.role = userRole;
+    }
+
+    public UserDtoRead toDto() {
+        return new UserDtoRead(this.username, this.name, this.email);
     }
 }

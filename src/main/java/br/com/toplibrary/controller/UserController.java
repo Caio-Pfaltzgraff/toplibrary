@@ -1,6 +1,8 @@
 package br.com.toplibrary.controller;
 
 import br.com.toplibrary.domain.model.user.User;
+import br.com.toplibrary.domain.model.user.UserDtoCreate;
+import br.com.toplibrary.domain.model.user.UserDtoRead;
 import br.com.toplibrary.domain.model.user.UserRole;
 import br.com.toplibrary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody User user) {
-        var newUser = new User(user.getEmail(), user.getUsername(), user.getName(), user.getPassword());
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(newUser));
+    public ResponseEntity create(@RequestBody UserDtoCreate user) {
+        var newUser = new User(user.email(), user.username(), user.name(), user.password());
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(newUser).toDto());
     }
 
     @PostMapping("/admin")
-    public ResponseEntity createAdmin(@RequestBody User user) {
-        var newUser = new User(user.getEmail(), user.getUsername(), user.getName(), user.getPassword(), UserRole.ADMIN);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(newUser));
+    public ResponseEntity createAdmin(@RequestBody UserDtoCreate user) {
+        var newUser = new User(user.email(), user.username(), user.name(), user.password(), UserRole.ADMIN);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(newUser).toDto());
     }
 }
