@@ -1,4 +1,4 @@
-# toplibrary
+# Top Library
 Gerenciador de biblioteca
 
 ## Diagrama de classes
@@ -6,7 +6,7 @@ Gerenciador de biblioteca
 ```mermaid
 classDiagram
   class User {
-    + id: int
+    + id: UUID
     + username: string
     + name: string
     + password: string
@@ -15,7 +15,7 @@ classDiagram
   }
 
   class Book {
-    + id: int
+    + id: UUID
     + title: string
     + isbn: string
     + publicationYear: int
@@ -23,30 +23,35 @@ classDiagram
   }
 
   class PublishingCompany {
-    + id: int
+    + id: UUID
     + name: string
   }
 
   class Author {
-    + id: int
+    + id: UUID
     + name: string
   }
 
   class Genre {
-    + id: int
+    + id: UUID
     + name: string
+  }
+  
+  class BookGenre {
+      + idLivro: UUID
+      + idGenre: UUID
   }
 
   class Rental {
-    + id: int
-    + rentalDate: string
-    + devolutionDate: string
+    + id: UUID
+    + rentalDate: Date
+    + devolutionDate: Date
   }
 
-  User -- Rental : User
-  Book -- Rental : Book
-  Book -- PublishingCompany : PublishingCompany
-  Book -- Author : Author
-  Book -- Genre : Genre
-
+  User "1" -- "N" Rental
+  Book "1" -- "N" Rental
+  Book "N" -- "1" PublishingCompany
+  Book "N" -- "1" Author
+  BookGenre "N" -- "1" Book
+  BookGenre "N" -- "1" Genre
 ```
