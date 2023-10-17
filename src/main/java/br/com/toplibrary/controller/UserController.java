@@ -2,7 +2,6 @@ package br.com.toplibrary.controller;
 
 import br.com.toplibrary.domain.model.user.User;
 import br.com.toplibrary.domain.model.user.UserDtoCreate;
-import br.com.toplibrary.domain.model.user.UserDtoRead;
 import br.com.toplibrary.domain.model.user.UserRole;
 import br.com.toplibrary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

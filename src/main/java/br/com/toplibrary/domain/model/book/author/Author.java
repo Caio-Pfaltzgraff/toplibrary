@@ -1,12 +1,11 @@
 package br.com.toplibrary.domain.model.book.author;
 
-import br.com.toplibrary.domain.model.book.Book;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Entity(name = "tb_author")
 @Data

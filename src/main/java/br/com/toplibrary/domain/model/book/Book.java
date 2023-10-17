@@ -2,9 +2,7 @@ package br.com.toplibrary.domain.model.book;
 
 import br.com.toplibrary.domain.model.book.author.Author;
 import br.com.toplibrary.domain.model.book.bookGenre.BookGenre;
-import br.com.toplibrary.domain.model.book.genre.Genre;
 import br.com.toplibrary.domain.model.book.publishingCompany.PublishingCompany;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;

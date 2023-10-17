@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BookService {
@@ -55,10 +56,15 @@ public class BookService {
             bookGenreService.save(bg);
         }
         return bookRepository.save(book);
-
     }
 
+    @Transactional(readOnly = true)
     public List<Book> findAll() {
         return bookRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Book findById(UUID id) {
+        return bookRepository.findById(id).get();
     }
 }
