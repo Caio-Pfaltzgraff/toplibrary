@@ -2,6 +2,7 @@ package br.com.toplibrary.domain.model.book.bookGenre;
 
 import br.com.toplibrary.domain.model.book.Book;
 import br.com.toplibrary.domain.model.book.genre.Genre;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class BookGenre {
 
     @ManyToOne
     @JoinColumn(name = "tb_book_id")
+    @JsonBackReference
     private Book book;
     @ManyToOne
     @JoinColumn(name = "tb_genre_id")

@@ -4,6 +4,8 @@ import br.com.toplibrary.domain.model.book.author.Author;
 import br.com.toplibrary.domain.model.book.bookGenre.BookGenre;
 import br.com.toplibrary.domain.model.book.genre.Genre;
 import br.com.toplibrary.domain.model.book.publishingCompany.PublishingCompany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,10 +24,11 @@ public class Book {
     private String isbn;
     private Integer publicationYear;
     private Integer quantity;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private PublishingCompany publishingCompany;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Author author;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<BookGenre> genres;
 }
