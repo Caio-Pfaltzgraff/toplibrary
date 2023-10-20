@@ -2,10 +2,7 @@ package br.com.toplibrary.service;
 
 import br.com.toplibrary.domain.model.book.Book;
 import br.com.toplibrary.domain.model.book.BookDTO;
-import br.com.toplibrary.domain.model.book.author.Author;
 import br.com.toplibrary.domain.model.book.bookGenre.BookGenre;
-import br.com.toplibrary.domain.model.book.genre.Genre;
-import br.com.toplibrary.domain.model.book.publishingCompany.PublishingCompany;
 import br.com.toplibrary.domain.repository.BookRepository;
 import br.com.toplibrary.infra.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +44,7 @@ public class BookService implements CrudService<UUID, Book> {
 
     @Transactional(readOnly = true)
     public Book findById(UUID id) {
-        return bookRepository.findById(id).orElseThrow(NotFoundException::new);
+        return bookRepository.findById(id).orElseThrow(() -> new NotFoundException(Book.class));
     }
 
     @Transactional

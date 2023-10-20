@@ -28,7 +28,7 @@ public class AuthorService implements CrudService<Long, Author>{
 
     @Transactional(readOnly = true)
     public Author findById(Long id) {
-        return authorRepository.findById(id).orElseThrow(NotFoundException::new);
+        return authorRepository.findById(id).orElseThrow(() -> new NotFoundException(Author.class));
     }
 
     @Transactional

@@ -28,7 +28,7 @@ public class PublishingCompanyService implements CrudService<Long, PublishingCom
 
     @Transactional(readOnly = true)
     public PublishingCompany findById(Long id) {
-        return publishingCompanyRepository.findById(id).orElseThrow(NotFoundException::new);
+        return publishingCompanyRepository.findById(id).orElseThrow(() -> new NotFoundException(PublishingCompany.class));
     }
 
     @Transactional

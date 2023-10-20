@@ -27,7 +27,7 @@ public class GenreService implements CrudService<Long, Genre>{
 
     @Transactional(readOnly = true)
     public Genre findById(Long id) {
-        return genreRepository.findById(id).orElseThrow(NotFoundException::new);
+        return genreRepository.findById(id).orElseThrow(() -> new NotFoundException(Genre.class));
     }
 
     @Transactional

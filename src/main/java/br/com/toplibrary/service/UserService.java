@@ -23,7 +23,7 @@ public class UserService implements CrudService<UUID, User> {
 
     @Transactional(readOnly = true)
     public User findById(UUID uuid) {
-        return userRepository.findById(uuid).orElseThrow(NotFoundException::new);
+        return userRepository.findById(uuid).orElseThrow(() -> new NotFoundException(User.class));
     }
 
     @Transactional(readOnly = true)

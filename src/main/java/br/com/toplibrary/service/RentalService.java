@@ -4,7 +4,6 @@ import br.com.toplibrary.domain.model.book.Book;
 import br.com.toplibrary.domain.model.rental.Rental;
 import br.com.toplibrary.domain.model.rental.RentalDTO;
 import br.com.toplibrary.domain.repository.RentalRepository;
-import br.com.toplibrary.infra.exception.BusinessException;
 import br.com.toplibrary.infra.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,22 +28,6 @@ public class RentalService implements CrudService<UUID, Rental>{
 
     @Transactional
     public Rental save(Rental rental) {
-        if(rental.getUser().getUsername() != null) {
-            var user = userService.findByUsername(rental.getUser().getUsername());
-            rental.setUser(user);
-        } else if(rental.getUser().getId() != null) {
-            var user = userService.findById(rental.getUser().getId());
-            rental.setUser(user);
-        } else {
-            throw new BusinessException("O campo user é obrigatório ter um id ou username.");
-        }
-
-        List<Book> booksToSave = new ArrayList<>();
-        for(Book book : rental.getBooks()) {
-            var bookSaved = bookService.findById(book.getId());
-            booksToSave.add(bookSaved);
-        }
-        rental.setBooks(booksToSave);
         return rentalRepository.save(rental);
     }
 
@@ -55,7 +38,7 @@ public class RentalService implements CrudService<UUID, Rental>{
 
     @Transactional(readOnly = true)
     public Rental findById(UUID id) {
-        return rentalRepository.findById(id).orElseThrow(NotFoundException::new);
+        return rentalRepository.findById(id).orElseThrow(() -> new NotFoundException(Rental.class));
     }
 
     @Transactional
@@ -74,7 +57,7 @@ public class RentalService implements CrudService<UUID, Rental>{
 
     @Transactional
     public Map<String, String> rentRefund(UUID id) {
-        var rental = rentalRepository.getReferenceById(id);
+        var rental = findById(id);
         rental.setDevolutionDate(LocalDateTime.now());
         rentalRepository.save(rental);
         var message =  "Devolução feita na data "
