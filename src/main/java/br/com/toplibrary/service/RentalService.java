@@ -6,15 +6,16 @@ import br.com.toplibrary.domain.model.rental.RentalDTO;
 import br.com.toplibrary.domain.repository.RentalRepository;
 import br.com.toplibrary.infra.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class RentalService implements CrudService<UUID, Rental>{
@@ -33,7 +34,11 @@ public class RentalService implements CrudService<UUID, Rental>{
 
     @Transactional(readOnly = true)
     public List<Rental> findAll() {
-        return rentalRepository.findAll();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        var userAuthenticated = auth.getName();
+        var user = userService.findByUsername(userAuthenticated);
+//        return rentalRepository.findAllByIdUser(user.getId());
+        return Arrays.asList();
     }
 
     @Transactional(readOnly = true)
