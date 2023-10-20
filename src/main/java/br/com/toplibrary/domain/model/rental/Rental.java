@@ -29,4 +29,9 @@ public class Rental {
     @CreationTimestamp
     private LocalDateTime rentalDate;
     private LocalDateTime devolutionDate;
+
+    public Rental(User user, List<Book> bookList) {
+        this.user = user;
+        this.books = bookList;
+    }
 }

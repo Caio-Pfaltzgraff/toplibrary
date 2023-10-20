@@ -22,4 +22,8 @@ public class BookGenre {
     @ManyToOne
     @JoinColumn(name = "tb_genre_id")
     private Genre genre;
+
+    public BookGenre(Genre genre) {
+        this.genre = genre;
+    }
 }

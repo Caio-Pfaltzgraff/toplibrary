@@ -43,7 +43,18 @@ public class User {
         this.role = userRole;
     }
 
-    public UserDtoRead toDto() {
-        return new UserDtoRead(this.username, this.name, this.email);
+    public void update(User userToUpdate) {
+        if(userToUpdate.email != null) {
+            this.email = userToUpdate.email;
+        }
+        if(userToUpdate.username != null) {
+            this.username = userToUpdate.username;
+        }
+        if(userToUpdate.name != null) {
+            this.name = userToUpdate.name;
+        }
+        if(userToUpdate.password != null) {
+            this.password = userToUpdate.password;
+        }
     }
 }

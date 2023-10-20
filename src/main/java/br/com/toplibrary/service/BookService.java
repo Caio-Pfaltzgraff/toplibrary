@@ -1,20 +1,23 @@
 package br.com.toplibrary.service;
 
 import br.com.toplibrary.domain.model.book.Book;
+import br.com.toplibrary.domain.model.book.BookDTO;
 import br.com.toplibrary.domain.model.book.author.Author;
 import br.com.toplibrary.domain.model.book.bookGenre.BookGenre;
 import br.com.toplibrary.domain.model.book.genre.Genre;
 import br.com.toplibrary.domain.model.book.publishingCompany.PublishingCompany;
 import br.com.toplibrary.domain.repository.BookRepository;
+import br.com.toplibrary.infra.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
-public class BookService {
+public class BookService implements CrudService<UUID, Book> {
 
     @Autowired
     private BookRepository bookRepository;
@@ -30,28 +33,7 @@ public class BookService {
 
     @Transactional
     public Book save(Book book) {
-        //verificar publishing company
-        if(book.getPublishingCompany().getId() == null) {
-            publishingCompanyService.save(new PublishingCompany(book.getPublishingCompany().getName()));
-        } else {
-            var publishingCompany = publishingCompanyService.findById(book.getPublishingCompany().getId());
-            book.setPublishingCompany(publishingCompany);
-        }
-
-        //verificar author
-        if(book.getAuthor().getId() == null) {
-            authorService.save(new Author(book.getAuthor().getName()));
-        } else {
-            var author = authorService.findById(book.getAuthor().getId());
-            book.setAuthor(author);
-        }
-
-        //verificar gender
         for (BookGenre bg : book.getGenres()) {
-            if(bg.getGenre().getId() == null) {
-                var genre = genreService.save(new Genre(bg.getGenre().getName()));
-                bg.setGenre(genre);
-            }
             bg.setBook(book);
             bookGenreService.save(bg);
         }
@@ -65,6 +47,33 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public Book findById(UUID id) {
-        return bookRepository.findById(id).get();
+        return bookRepository.findById(id).orElseThrow(NotFoundException::new);
+    }
+
+    @Transactional
+    public Book update(UUID id, Book bookToUpdated) {
+        var book = findById(id);
+        book.update(bookToUpdated);
+        return book;
+    }
+
+    @Transactional
+    public void delete(UUID id) {
+        var book = findById(id);
+        bookRepository.delete(book);
+    }
+
+    @Transactional(readOnly = true)
+    public Book getBookForDto(BookDTO bookDto) {
+        var author = authorService.findById(bookDto.author());
+        var publishingCompany = publishingCompanyService.findById(bookDto.publishingCompany());
+        List<BookGenre> genres = new ArrayList<>();
+        bookDto.genres().forEach(genre -> {
+            var genreSaved = genreService.findById(genre);
+            genres.add(new BookGenre(genreSaved));
+        });
+
+        return new Book(bookDto.title(), bookDto.isbn(), bookDto.publicationYear(),
+                bookDto.quantity(), publishingCompany, author, genres);
     }
 }
