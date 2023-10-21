@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UserService implements CrudService<UUID, User>, UserDetailsService {
+public class UserService implements CrudService<UUID, User> {
 
     @Autowired
     private UserRepository userRepository;
@@ -55,10 +55,5 @@ public class UserService implements CrudService<UUID, User>, UserDetailsService 
     public void delete(UUID id) {
         var user = findById(id);
         userRepository.delete(user);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return findByUsername(username);
     }
 }
