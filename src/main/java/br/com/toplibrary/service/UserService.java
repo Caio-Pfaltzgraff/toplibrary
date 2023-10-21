@@ -56,4 +56,9 @@ public class UserService implements CrudService<UUID, User> {
         var user = findById(id);
         userRepository.delete(user);
     }
+
+    @Transactional(readOnly = true)
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
 }
