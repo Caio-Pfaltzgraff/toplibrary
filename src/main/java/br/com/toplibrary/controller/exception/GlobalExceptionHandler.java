@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,8 +21,8 @@ public class GlobalExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> handleNoContentException(NotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<Map<String, String>> handleNoContentException(NotFoundException ex) {
+        return new ResponseEntity<>(Map.of("message", ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -60,11 +61,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.unprocessableEntity().body(errors);
     }
 
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    public ResponseEntity<Map<String, String>> handleAuthenticationNotFound() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Nome de usuário ou senha incorretos"));
+    }
+
     @ExceptionHandler(Throwable.class)
-    public ResponseEntity<String> handleUnexpectedException(Throwable unexpectedException) {
+    public ResponseEntity<Map<String, String>> handleUnexpectedException(Throwable unexpectedException) {
         String message = "Unexpected server error.";
         LOGGER.error(message, unexpectedException);
-        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(Map.of("message", message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

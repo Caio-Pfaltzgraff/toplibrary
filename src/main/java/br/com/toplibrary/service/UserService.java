@@ -4,9 +4,6 @@ import br.com.toplibrary.domain.model.user.User;
 import br.com.toplibrary.domain.repository.UserRepository;
 import br.com.toplibrary.infra.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +17,7 @@ public class UserService implements CrudService<UUID, User> {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder encoder;
 
     @Transactional(readOnly = true)
     public List<User> findAll() {
@@ -40,7 +37,8 @@ public class UserService implements CrudService<UUID, User> {
     @Transactional
     public User save(User user) {
         String pass = user.getPassword();
-        user.setPassword(passwordEncoder.encode(pass));
+        user.setPassword(encoder.encode(pass));
+
         return userRepository.save(user);
     }
 
@@ -55,5 +53,10 @@ public class UserService implements CrudService<UUID, User> {
     public void delete(UUID id) {
         var user = findById(id);
         userRepository.delete(user);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 }

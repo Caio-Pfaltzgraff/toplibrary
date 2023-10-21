@@ -6,6 +6,8 @@ import br.com.toplibrary.domain.model.rental.RentalDTO;
 import br.com.toplibrary.domain.repository.RentalRepository;
 import br.com.toplibrary.infra.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +35,11 @@ public class RentalService implements CrudService<UUID, Rental>{
 
     @Transactional(readOnly = true)
     public List<Rental> findAll() {
-        return rentalRepository.findAll();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        var userAuthenticated = auth.getName();
+        System.out.println(userAuthenticated);
+        var user = userService.findByUsername(userAuthenticated);
+        return rentalRepository.findByUser(user);
     }
 
     @Transactional(readOnly = true)

@@ -44,7 +44,7 @@ public class RentalController {
     }
 
     @GetMapping
-    @Operation(summary = "Busca todos os aluguéis", description = "Retorna uma lista com todos os aluguéis registrados")
+    @Operation(summary = "Busca todos os aluguéis do usuário", description = "Retorna uma lista com todos os aluguéis do usuário autenticado que foram registrados")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operação realizada com sucesso")
     })
