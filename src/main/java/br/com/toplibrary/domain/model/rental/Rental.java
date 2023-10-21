@@ -23,7 +23,7 @@ public class Rental {
     @JoinColumn(name = "tb_user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private List<Book> books;
 
     @CreationTimestamp

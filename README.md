@@ -1,6 +1,8 @@
 # 📚 Top Library
 Top Library é uma API REST que simula uma biblioteca. Foi construída utilizando Java 17 e Spring Boot.
 
+- URL de Produção: https://toplibrary.up.railway.app/books
+
 ---
 
 ## 🛠 Tecnologias
@@ -37,8 +39,8 @@ Para utilizar a aplicação, é necessário fazer login e recuperar o token de s
 ---
 
 ## 📄 Documentação da API
-- **[Documentação em JSON](http://localhost:8080/v3/api-docs)**
-- **[Documentação no Swagger](http://localhost:8080/swagger-ui/index.html#/)**
+- **[Documentação em JSON](https://toplibrary.up.railway.app/v3/api-docs)**
+- **[Documentação no Swagger](https://toplibrary.up.railway.app/swagger-ui/index.html)**
 
 ---
 
