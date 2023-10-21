@@ -1,5 +1,6 @@
 package br.com.toplibrary.infra.security;
 
+import br.com.toplibrary.domain.repository.UserRepository;
 import br.com.toplibrary.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,14 +20,14 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     private TokenService tokenService;
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = recoverToken(request);
 
         if(token != null) {
             var username = tokenService.validateToken(token);
-            var user = userService.findByUsername(username);
+            var user = userRepository.findByUsername(username);
 
             var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
