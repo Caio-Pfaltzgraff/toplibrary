@@ -19,7 +19,7 @@ public class SpringDocConfiguration {
                         .addSecuritySchemes("bearer-key", new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")))
                 .info(new Info()
                     .title("Top Library API")
-                    .description("API Rest de um gerenciamento de biblioteca, onde possui um usuário que faça aluguel dos livros cadastrados na Top Library.")
+                    .description("API Rest de um gerenciamento de biblioteca.")
                     .contact(new Contact()
                             .name("Time Backend")
                             .email("top.library@gmail.com")
