@@ -28,6 +28,7 @@ public class User implements UserDetails {
 
     private String name;
     private String password;
+    private Boolean ativo;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -37,6 +38,7 @@ public class User implements UserDetails {
         this.username = username;
         this.name = name;
         this.password = password;
+        this.ativo = true;
         this.role = UserRole.USER;
     }
 
@@ -45,6 +47,7 @@ public class User implements UserDetails {
         this.username = username;
         this.name = name;
         this.password = password;
+        this.ativo = true;
         this.role = userRole;
     }
 

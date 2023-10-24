@@ -1,7 +1,28 @@
 # 📚 Top Library
-Top Library é uma API REST que simula uma biblioteca. Foi construída utilizando Java 17 e Spring Boot.
+Top Library é uma API REST de gerenciamento de uma biblioteca. Foi construída utilizando Java 17 e Spring Boot.
 
 - URL de Produção: https://toplibrary.up.railway.app/books
+
+---
+
+## 🔎 Especificações da Aplicação
+A API permite a criação de usuários com dois tipos de autorizações: `user` e `admin`.
+
+Usuários com autorização `user` podem:
+
+- Fazer login
+- Verificar livros disponíveis
+- Alugar livros
+
+Usuários com autorização `admin` têm todas as permissões de um `user`, além de poderem:
+
+- Adicionar, alterar, deletar e buscar `Livros`, `Gêneros`, `Autores` e `Editoras`
+- Criar outros usuários `admin`
+
+Para utilizar a aplicação, é necessário fazer login e recuperar o token de segurança JWT. Este token deve ser inserido em todas as requisições para validação. 
+O token tem duração de 2 horas após o login. Após esse período, é necessário fazer login novamente para obter um novo token.
+
+Para melhoria de performance, a aplicação utiliza cache para diminuir as consultas ao banco, e a cada dado alterado ou salvo o cache é atualizado.
 
 ---
 
@@ -20,31 +41,13 @@ Este projeto foi desenvolvido com as seguintes tecnologias:
 
 ---
 
-## 🔎 Especifiações da aplicação
-A API permite a criação de usuários com dois tipos de autorizações: `user` e `admin`.
-
-Usuários com autorização `user` podem:
-
-- Fazer login
-- Verificar livros disponíveis
-- Alugar livros
-
-Usuários com autorização `admin` têm todas as permissões de um `user`, além de poderem:
-
-- Adicionar, alterar, deletar e buscar `Livros`, `Gêneros`, `Autores` e `Editoras`
-- Criar outros usuários `admin`
-
-Para utilizar a aplicação, é necessário fazer login e recuperar o token de segurança JWT. Este token deve ser inserido em todas as requisições para validação. O token tem duração de 2 horas após o login. Após esse período, é necessário fazer login novamente para obter um novo token.
-
----
-
 ## 📄 Documentação da API
 - **[Documentação em JSON](https://toplibrary.up.railway.app/v3/api-docs)**
 - **[Documentação no Swagger](https://toplibrary.up.railway.app/swagger-ui/index.html)**
 
 ---
 
-## 📊 Diagrama de classes
+## 📊 Diagrama de Classes
 
 ```mermaid
 classDiagram
@@ -54,6 +57,7 @@ classDiagram
     + name: string
     + password: string
     + email: string
+    + ativo: boolean
     + role: string
   }
 

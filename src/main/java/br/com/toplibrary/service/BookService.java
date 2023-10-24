@@ -6,6 +6,7 @@ import br.com.toplibrary.domain.model.book.bookGenre.BookGenre;
 import br.com.toplibrary.domain.repository.BookRepository;
 import br.com.toplibrary.infra.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class BookService implements CrudService<UUID, Book> {
 
 
     @Transactional
+    @CacheEvict(value = "book", allEntries = true)
     public Book save(Book book) {
         for (BookGenre bg : book.getGenres()) {
             bg.setBook(book);
@@ -48,6 +50,7 @@ public class BookService implements CrudService<UUID, Book> {
     }
 
     @Transactional
+    @CacheEvict(value = "book", allEntries = true)
     public Book update(UUID id, Book bookToUpdated) {
         var book = findById(id);
         book.update(bookToUpdated);
@@ -55,6 +58,7 @@ public class BookService implements CrudService<UUID, Book> {
     }
 
     @Transactional
+    @CacheEvict(value = "book", allEntries = true)
     public void delete(UUID id) {
         var book = findById(id);
         bookRepository.delete(book);

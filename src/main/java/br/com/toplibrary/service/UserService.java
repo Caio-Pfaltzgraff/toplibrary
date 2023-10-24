@@ -4,6 +4,7 @@ import br.com.toplibrary.domain.model.user.User;
 import br.com.toplibrary.domain.repository.UserRepository;
 import br.com.toplibrary.infra.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public class UserService implements CrudService<UUID, User> {
 
     @Transactional(readOnly = true)
     public List<User> findAll() {
-        return userRepository.findAll();
+        return userRepository.findAllByAtivoTrue();
     }
 
     @Transactional(readOnly = true)
@@ -35,6 +36,7 @@ public class UserService implements CrudService<UUID, User> {
     }
 
     @Transactional
+    @CacheEvict(value = "users", allEntries = true)
     public User save(User user) {
         String pass = user.getPassword();
         user.setPassword(encoder.encode(pass));
@@ -43,6 +45,7 @@ public class UserService implements CrudService<UUID, User> {
     }
 
     @Transactional
+    @CacheEvict(value = "users", allEntries = true)
     public User update(UUID id, User userToUpdate) {
         var user = findById(id);
         user.update(userToUpdate);
@@ -50,9 +53,10 @@ public class UserService implements CrudService<UUID, User> {
     }
 
     @Transactional
+    @CacheEvict(value = "users", allEntries = true)
     public void delete(UUID id) {
         var user = findById(id);
-        userRepository.delete(user);
+        user.setAtivo(false);
     }
 
     @Transactional(readOnly = true)

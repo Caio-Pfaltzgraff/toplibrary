@@ -4,6 +4,7 @@ import br.com.toplibrary.domain.model.book.author.Author;
 import br.com.toplibrary.domain.repository.AuthorRepository;
 import br.com.toplibrary.infra.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ public class AuthorService implements CrudService<Long, Author>{
     private AuthorRepository authorRepository;
 
     @Transactional
+    @CacheEvict(value = "author", allEntries = true)
     public Author save(Author author) {
         return authorRepository.save(author);
     }
@@ -32,6 +34,7 @@ public class AuthorService implements CrudService<Long, Author>{
     }
 
     @Transactional
+    @CacheEvict(value = "author", allEntries = true)
     public Author update(Long id, Author authorToUpdated) {
         var author = findById(id);
         author.setName(authorToUpdated.getName());
@@ -39,6 +42,7 @@ public class AuthorService implements CrudService<Long, Author>{
     }
 
     @Transactional
+    @CacheEvict(value = "author", allEntries = true)
     public void delete(Long id) {
         var author = findById(id);
         authorRepository.delete(author);

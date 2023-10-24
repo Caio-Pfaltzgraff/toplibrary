@@ -4,6 +4,7 @@ import br.com.toplibrary.domain.model.book.genre.Genre;
 import br.com.toplibrary.domain.repository.GenreRepository;
 import br.com.toplibrary.infra.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ public class GenreService implements CrudService<Long, Genre>{
 
 
     @Transactional
+    @CacheEvict(value = "genre", allEntries = true)
     public Genre save(Genre genre) {
         return genreRepository.save(genre);
     }
@@ -31,6 +33,7 @@ public class GenreService implements CrudService<Long, Genre>{
     }
 
     @Transactional
+    @CacheEvict(value = "genre", allEntries = true)
     public Genre update(Long id, Genre genreToUpdated) {
         var genre = findById(id);
         genre.setName(genreToUpdated.getName());
@@ -38,6 +41,7 @@ public class GenreService implements CrudService<Long, Genre>{
     }
 
     @Transactional
+    @CacheEvict(value = "genre", allEntries = true)
     public void delete(Long id) {
         var genre = findById(id);
         genreRepository.delete(genre);

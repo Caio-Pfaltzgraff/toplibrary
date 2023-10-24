@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,6 +27,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .headers().frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
+                .and()
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(new AntPathRequestMatcher("/login", HttpMethod.POST.name())).permitAll()
@@ -47,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/books/**", HttpMethod.PUT.name())).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/rentals/**", HttpMethod.PUT.name())).hasRole("ADMIN")
                         .requestMatchers(new AntPathRequestMatcher("/users/admin")).hasRole("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/users", HttpMethod.GET.name())).hasRole("ADMIN")
                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

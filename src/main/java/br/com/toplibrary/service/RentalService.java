@@ -6,6 +6,7 @@ import br.com.toplibrary.domain.model.rental.RentalDTO;
 import br.com.toplibrary.domain.repository.RentalRepository;
 import br.com.toplibrary.infra.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class RentalService implements CrudService<UUID, Rental>{
     private BookService bookService;
 
     @Transactional
+    @CacheEvict(value = "rentals", allEntries = true)
     public Rental save(Rental rental) {
         return rentalRepository.save(rental);
     }
@@ -48,6 +50,7 @@ public class RentalService implements CrudService<UUID, Rental>{
     }
 
     @Transactional
+    @CacheEvict(value = "rentals", allEntries = true)
     public Rental update(UUID id, Rental rentalToUpdated) {
         var rental = findById(id);
         rental.setUser(rentalToUpdated.getUser());
@@ -56,12 +59,14 @@ public class RentalService implements CrudService<UUID, Rental>{
     }
 
     @Transactional
+    @CacheEvict(value = "rentals", allEntries = true)
     public void delete(UUID id) {
         var rental = findById(id);
         rentalRepository.delete(rental);
     }
 
     @Transactional
+    @CacheEvict(value = "rentals", allEntries = true)
     public Map<String, String> rentRefund(UUID id) {
         var rental = findById(id);
         rental.setDevolutionDate(LocalDateTime.now());

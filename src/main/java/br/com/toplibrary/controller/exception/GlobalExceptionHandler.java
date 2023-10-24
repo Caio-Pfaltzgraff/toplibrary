@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Map<String, String>> handleNoContentException(NotFoundException ex) {
-        return new ResponseEntity<>(Map.of("message", ex.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ErrorMessage.send(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -63,14 +63,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseEntity<Map<String, String>> handleAuthenticationNotFound() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Nome de usuário ou senha incorretos"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorMessage.send("Nome de usuário ou senha incorretos"));
     }
 
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<Map<String, String>> handleUnexpectedException(Throwable unexpectedException) {
-        String message = "Unexpected server error.";
+        String message = "Ocorreu um erro inesperado do sistema.";
         LOGGER.error(message, unexpectedException);
-        return new ResponseEntity<>(Map.of("message", message), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ErrorMessage.send(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
